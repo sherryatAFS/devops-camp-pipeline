@@ -21,6 +21,7 @@ pipeline {
                 }            }
         }
         stage('Application docker build') {
+            echo "Building application image"
             steps {
                 withCredentials([usernameColonPassword(credentialsId: 'ssmith-harbor-auth', variable: 'HARBOR-AUTH')]) {
                     script {
@@ -30,8 +31,8 @@ pipeline {
                             sh 'docker push $HARBOR_REGISTRY/$HARBOR_PROJECT/$APP_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
                         }
                     }
+                  }
                 }
-                echo "Building application image"
                 post {
                 always {
                     echo "Clean local $APP_IMAGE_NAME image"
